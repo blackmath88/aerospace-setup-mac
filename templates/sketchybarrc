@@ -1,0 +1,17 @@
+#!/bin/bash
+SB='__SKETCHYBAR_BIN__'
+
+"$SB" --bar position=top height=28 y_offset=40 display=all color=0x00000000 border_color=0x00000000 border_width=0 blur_radius=0 shadow=off notch_width=0 topmost=on
+"$SB" --default icon.drawing=off label.font='Helvetica Neue:Bold:14.0' label.color=0xffc4c9d4 label.padding_left=14 label.padding_right=14 background.drawing=on background.color=0xdd242833 background.corner_radius=10 background.height=26 padding_left=3 padding_right=3
+"$SB" --add event desktop_pair_changed
+"$SB" --add item desktop.line.left center --set desktop.line.left label.drawing=off width=56 background.height=1 background.corner_radius=0 background.color=0xff8aadf4 padding_left=8 padding_right=8
+for n in 1 2 3 4; do
+  "$SB" --add item "desktop.$n" center --set "desktop.$n" label="$n" click_script="__PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py $n"
+done
+"$SB" --add item desktop.line.right center --set desktop.line.right label.drawing=off width=56 background.height=1 background.corner_radius=0 background.color=0xff8aadf4 padding_left=8 padding_right=8
+"$SB" --set desktop.1 background.color=0x663b4c6b \
+        --set desktop.2 background.color=0x6654456b \
+        --set desktop.3 background.color=0x66495f45 \
+        --set desktop.4 background.color=0x66645943
+"$SB" --set desktop.1 script='__HOME__/.config/sketchybar/update-desktop.sh' update_freq=2 --subscribe desktop.1 desktop_pair_changed system_woke display_change
+"$SB" --update

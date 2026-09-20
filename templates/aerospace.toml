@@ -1,0 +1,64 @@
+# AeroSpace tiling and paired-workspace configuration.
+start-at-login = true
+after-startup-command = [
+  'exec-and-forget __BORDERS_BIN__ style=round width=6.0 hidpi=on active_color=0xff8aadf4 inactive_color=0xff8aadf4'
+]
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+[gaps]
+inner.horizontal = 12
+inner.vertical = 12
+outer.left = 12
+outer.bottom = 12
+outer.top = 42
+outer.right = 12
+
+[mode.main.binding]
+alt-left = 'focus left'
+alt-down = 'focus down'
+alt-up = 'focus up'
+alt-right = 'focus right'
+alt-shift-left = 'swap left'
+alt-shift-down = 'swap down'
+alt-shift-up = 'swap up'
+alt-shift-right = 'swap right'
+
+alt-w = 'close'
+alt-t = 'layout floating tiling'
+alt-f = 'fullscreen'
+alt-j = 'layout tiles horizontal vertical'
+alt-l = 'layout tiles accordion'
+alt-shift-space = 'layout floating tiling'
+alt-shift-r = 'reload-config'
+
+alt-tab = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py next'
+alt-shift-tab = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py prev'
+alt-ctrl-tab = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py back'
+
+alt-ctrl-right = 'focus-monitor --wrap-around next'
+alt-ctrl-left = 'focus-monitor --wrap-around prev'
+alt-minus = 'resize width -100'
+alt-equal = 'resize width +100'
+alt-shift-minus = 'resize height -100'
+alt-shift-equal = 'resize height +100'
+alt-backslash = 'join-with right'
+alt-ctrl-j = 'join-with down'
+alt-v = 'join-with right'
+alt-shift-v = 'join-with left'
+
+alt-1 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py 1'
+alt-shift-1 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py move 1'
+alt-ctrl-shift-1 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py send 1'
+alt-2 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py 2'
+alt-shift-2 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py move 2'
+alt-ctrl-shift-2 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py send 2'
+alt-3 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py 3'
+alt-shift-3 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py move 3'
+alt-ctrl-shift-3 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py send 3'
+alt-4 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py 4'
+alt-shift-4 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py move 4'
+alt-ctrl-shift-4 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py send 4'
