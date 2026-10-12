@@ -5,7 +5,8 @@ A reusable macOS tiling setup built around AeroSpace, SketchyBar, and JankyBorde
 It provides:
 
 - four keyboard-driven desktop groups;
-- synchronized workspace pairs across a Mac display and an optional external display;
+- synchronized workspace groups across every connected display;
+- automatic landscape, portrait, and built-in display role detection;
 - a compact, centered workspace indicator with short accent lines;
 - per-workspace colors shared by the indicator and window borders;
 - small window gaps and a compact top clearance;
@@ -32,20 +33,29 @@ Clone the repository on the target Mac, then run:
 ./install.sh
 ```
 
-For synchronized workspace pairs across the built-in display and an external monitor, pass the exact external monitor name:
-
-```bash
-aerospace list-monitors
-./install.sh "S34CG50"
-```
-
 The installer:
 
 1. verifies the required commands;
 2. backs up any existing managed files with a timestamp;
-3. renders paths and the optional monitor name for the current Mac;
-4. installs the AeroSpace, SketchyBar, workspace-pair, and LaunchAgent files;
+3. renders paths for the current Mac;
+4. installs the AeroSpace, SketchyBar, workspace-group, and LaunchAgent files;
 5. reloads AeroSpace and starts the workspace indicator.
+
+## Display behavior
+
+The same installation adapts automatically to home, work, and temporarily
+disconnected displays. Displays receive stable roles in this order:
+
+1. landscape external displays;
+2. portrait external displays;
+3. the built-in Mac display.
+
+Each role receives one workspace from the selected desktop group. With three
+displays, group 1 uses workspaces `1`, `6`, and `11`; group 2 uses `2`, `7`,
+and `12`, and so on. The configuration repairs a mixed visible group after a
+display change, wake, or manual workspace switch. Windows from a disconnected
+display are temporarily collapsed onto the remaining displays and restored
+when the display returns.
 
 ## Main shortcuts
 

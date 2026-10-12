@@ -2,7 +2,6 @@
 set -euo pipefail
 
 repo_dir=$(cd "$(dirname "$0")" && pwd)
-external_monitor=${1:-}
 timestamp=$(date '+%Y%m%d-%H%M%S')
 
 resolve_bin() {
@@ -53,7 +52,6 @@ render() {
     -e "s|__SKETCHYBAR_BIN__|$sketchybar_bin|g" \
     -e "s|__BORDERS_BIN__|$borders_bin|g" \
     -e "s|__PYTHON_BIN__|$python_bin|g" \
-    -e "s|__EXTERNAL_MONITOR__|$external_monitor|g" \
     "$source" > "$destination"
 }
 
@@ -63,21 +61,10 @@ backup_file "$HOME/.aerospace.toml"
 backup_file "$HOME/.config/sketchybar/sketchybarrc"
 backup_file "$HOME/.config/sketchybar/update-desktop.sh"
 backup_file "$HOME/.config/aerospace-pairs/pairs.py"
+backup_file "$HOME/.config/aerospace-pairs/displays.json"
 backup_file "$HOME/Library/LaunchAgents/local.sketchybar.desktop-indicator.plist"
 
 render "$repo_dir/templates/aerospace.toml" "$HOME/.aerospace.toml"
-if [[ -n "$external_monitor" ]]; then
-  {
-    printf '\n[workspace-to-monitor-force-assignment]\n'
-    for workspace in 1 2 3 4; do
-      printf "%s = ['%s', 'main']\n" "$workspace" "$external_monitor"
-    done
-    for workspace in 6 7 8 9; do
-      printf "%s = ['Built-in Retina Display', 'main']\n" "$workspace"
-    done
-  } >> "$HOME/.aerospace.toml"
-fi
-
 render "$repo_dir/templates/sketchybarrc" "$HOME/.config/sketchybar/sketchybarrc"
 render "$repo_dir/templates/update-desktop.sh" "$HOME/.config/sketchybar/update-desktop.sh"
 render "$repo_dir/templates/pairs.py" "$HOME/.config/aerospace-pairs/pairs.py"
@@ -95,8 +82,4 @@ launchctl bootstrap "gui/$UID" "$HOME/Library/LaunchAgents/local.sketchybar.desk
 launchctl kickstart -k "gui/$UID/local.sketchybar.desktop-indicator"
 
 printf 'Installed AeroSpace setup for %s.\n' "$USER"
-if [[ -n "$external_monitor" ]]; then
-  printf 'External monitor pairing: %s\n' "$external_monitor"
-else
-  printf 'Single-display mode installed.\n'
-fi
+printf 'Display topology is detected automatically.\n'
