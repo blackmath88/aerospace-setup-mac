@@ -1,6 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+if [[ "${1:-}" == "--help" ]]; then
+  printf 'Usage: ./install.sh [--dry-run|--help]\n'
+  exit 0
+fi
+if [[ $# -gt 1 || ( $# -eq 1 && "${1}" != "--dry-run" ) ]]; then
+  printf 'Usage: ./install.sh [--dry-run|--help]\n' >&2
+  exit 2
+fi
+
 repo_dir=$(cd "$(dirname "$0")" && pwd)
 timestamp=$(date '+%Y%m%d-%H%M%S')
 
@@ -54,6 +63,19 @@ render() {
     -e "s|__PYTHON_BIN__|$python_bin|g" \
     "$source" > "$destination"
 }
+
+if [[ "${1:-}" == "--dry-run" ]]; then
+  printf 'Dry run: no files or services will be changed.\n'
+  printf 'Will replace (with timestamped backups if present):\n'
+  printf '%s\n' \\
+    "$HOME/.aerospace.toml" \\
+    "$HOME/.config/sketchybar/sketchybarrc" \\
+    "$HOME/.config/sketchybar/update-desktop.sh" \\
+    "$HOME/.config/aerospace-pairs/pairs.py" \\
+    "$HOME/Library/LaunchAgents/local.sketchybar.desktop-indicator.plist"
+  printf 'Existing workspace-group runtime state may be reused.\n'
+  exit 0
+fi
 
 mkdir -p "$HOME/.config/sketchybar" "$HOME/.config/aerospace-pairs" "$HOME/Library/LaunchAgents"
 

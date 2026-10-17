@@ -1,0 +1,17 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shell syntax
+        run: bash -n install.sh templates/sketchybarrc templates/update-desktop.sh
+      - name: Python syntax
+        run: python3 -m py_compile templates/pairs.py tests/test_pairs.py
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -v
