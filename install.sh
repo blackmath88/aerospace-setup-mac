@@ -2,11 +2,11 @@
 set -euo pipefail
 
 if [[ "${1:-}" == "--help" ]]; then
-  printf 'Usage: ./install.sh [--dry-run|--help]\\n'
+  printf 'Usage: ./install.sh [--dry-run|--help]\n'
   exit 0
 fi
 if [[ $# -gt 1 || ( $# -eq 1 && "${1}" != "--dry-run" ) ]]; then
-  printf 'Usage: ./install.sh [--dry-run|--help]\\n' >&2
+  printf 'Usage: ./install.sh [--dry-run|--help]\n' >&2
   exit 2
 fi
 
@@ -65,15 +65,15 @@ render() {
 }
 
 if [[ "${1:-}" == "--dry-run" ]]; then
-  printf 'Dry run: no files or services will be changed.\\n'
-  printf 'Will replace (with timestamped backups if present):\\n'
-  printf '%s\\n' \\
+  printf 'Dry run: no files or services will be changed.\n'
+  printf 'Will replace (with timestamped backups if present):\n'
+  printf '%s\n' \\
     "$HOME/.aerospace.toml" \\
     "$HOME/.config/sketchybar/sketchybarrc" \\
     "$HOME/.config/sketchybar/update-desktop.sh" \\
     "$HOME/.config/aerospace-pairs/pairs.py" \\
     "$HOME/Library/LaunchAgents/local.sketchybar.desktop-indicator.plist"
-  printf 'Existing workspace-group runtime state may be reused.\\n'
+  printf 'Existing workspace-group runtime state may be reused.\n'
   exit 0
 fi
 
