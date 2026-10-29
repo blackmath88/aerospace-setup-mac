@@ -57,6 +57,15 @@ display change, wake, or manual workspace switch. Windows from a disconnected
 display are temporarily collapsed onto the remaining displays and restored
 when the display returns.
 
+Interactive switches wait for an in-progress switch instead of being
+silently discarded. Background display-sync events remain non-blocking, so a
+burst of macOS display notifications cannot build up a stale switch queue.
+
+For the most stable multi-display behavior, disable **Displays have separate
+Spaces** in **System Settings → Desktop & Dock → Mission Control**, then log out
+and back in. AeroSpace's own guide recommends this because macOS Spaces can
+otherwise cause focus jumps and flicker when windows move between displays.
+
 ## Main shortcuts
 
 Option acts as the main modifier.

@@ -50,6 +50,17 @@ def save_state(state):
     os.replace(temporary, STATE)
 
 
+def acquire_lock(lock_file, action):
+    flags = fcntl.LOCK_EX
+    if action == 'sync':
+        flags |= fcntl.LOCK_NB
+    try:
+        fcntl.flock(lock_file, flags)
+    except BlockingIOError:
+        return False
+    return True
+
+
 def read_display_cache(signature):
     try:
         cache = json.loads(DISPLAY_CACHE.read_text())
@@ -216,6 +227,7 @@ def restore_added_slots(state, new_count):
                 str(workspace_for(home['group'], home['slot'])),
             )
         except subprocess.CalledProcessError:
+            # Closed windows and stale IDs need no further restoration.
             pass
         del collapsed[window_id]
 
@@ -258,6 +270,7 @@ def show_group(group, monitors, focused_monitor_id):
             str(workspace_for(group, slot)), str(monitor['monitor-id']),
         )
 
+    # End on the monitor where the user started so focus doesn't jump screens.
     ordered = [m for m in monitors if m['monitor-id'] != focused_monitor_id]
     ordered += [m for m in monitors if m['monitor-id'] == focused_monitor_id]
     slot_by_id = {m['monitor-id']: slot for slot, m in enumerate(monitors)}
@@ -276,14 +289,14 @@ def main():
     if len(sys.argv) < 2:
         raise SystemExit('usage: pairs.py sync|next|prev|back|1|2|3|4|move N|send N')
 
+    action = sys.argv[1]
     STATE.parent.mkdir(parents=True, exist_ok=True)
     with LOCK.open('w') as lock_file:
-        try:
-            fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
+        # Never lose an explicit shortcut just because a previous switch is
+        # still finishing. Background syncs stay non-blocking.
+        if not acquire_lock(lock_file, action):
             return
 
-        action = sys.argv[1]
         monitors = list_monitors()
         if not monitors:
             return

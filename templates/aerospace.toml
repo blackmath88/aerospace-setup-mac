@@ -1,4 +1,5 @@
-# AeroSpace tiling and paired-workspace configuration.
+# AeroSpace tiling and synchronized workspace-group configuration.
+config-version = 2
 start-at-login = true
 after-startup-command = [
   'exec-and-forget __BORDERS_BIN__ style=round width=6.0 hidpi=on active_color=0xff8aadf4 inactive_color=0xff8aadf4'
@@ -50,6 +51,7 @@ alt-ctrl-j = 'join-with down'
 alt-v = 'join-with right'
 alt-shift-v = 'join-with left'
 
+# Four synchronized desktop groups across every connected monitor.
 alt-1 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py 1'
 alt-shift-1 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py move 1'
 alt-ctrl-shift-1 = 'exec-and-forget __PYTHON_BIN__ __HOME__/.config/aerospace-pairs/pairs.py send 1'

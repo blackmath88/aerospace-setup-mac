@@ -1,6 +1,7 @@
 import importlib.util
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 SPEC = importlib.util.spec_from_file_location(
@@ -59,6 +60,21 @@ class MonitorOrderingTests(unittest.TestCase):
         self.assertEqual(
             [PAIRS.monitor_role(item) for item in ordered],
             ['landscape', 'portrait', 'built-in'],
+        )
+
+
+class LockingTests(unittest.TestCase):
+    @mock.patch.object(PAIRS.fcntl, 'flock')
+    def test_interactive_switch_waits_for_lock(self, flock):
+        self.assertTrue(PAIRS.acquire_lock(object(), 'next'))
+        flock.assert_called_once_with(mock.ANY, PAIRS.fcntl.LOCK_EX)
+
+    @mock.patch.object(PAIRS.fcntl, 'flock')
+    def test_background_sync_does_not_wait(self, flock):
+        flock.side_effect = BlockingIOError
+        self.assertFalse(PAIRS.acquire_lock(object(), 'sync'))
+        flock.assert_called_once_with(
+            mock.ANY, PAIRS.fcntl.LOCK_EX | PAIRS.fcntl.LOCK_NB,
         )
 
 

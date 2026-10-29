@@ -83,3 +83,7 @@ launchctl kickstart -k "gui/$UID/local.sketchybar.desktop-indicator"
 
 printf 'Installed AeroSpace setup for %s.\n' "$USER"
 printf 'Display topology is detected automatically.\n'
+if [[ "$(defaults read com.apple.spaces spans-displays 2>/dev/null || true)" != "1" ]]; then
+  printf '%s\n' \
+    'Stability note: disable “Displays have separate Spaces” in System Settings → Desktop & Dock → Mission Control, then log out and back in.'
+fi
